@@ -1,5 +1,4 @@
 import { useState, FormEvent, ChangeEvent } from "react";
-
 import Auth from '../utils/auth';
 import { login } from "../api/authAPI";
 
@@ -20,8 +19,12 @@ const Login = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const data = await login(loginData);
-      Auth.login(data.token);
+      const data: { success: boolean; message?: string; token?: string } = await login(loginData);
+      if (data.success && data.token) {
+        Auth.login(data.token); // Save the JWT and redirect using AuthService
+      } else {
+        console.error('Login failed', data.message);
+      }
     } catch (err) {
       console.error('Failed to login', err);
     }
