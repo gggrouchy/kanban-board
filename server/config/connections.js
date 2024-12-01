@@ -12,3 +12,4 @@ if (process.env.DB_URL) {
       dialect: 'postgres',
     },
   );
+}
